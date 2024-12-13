@@ -9,11 +9,11 @@ import os
 if "df" not in st.session_state:
     st.session_state.df = pd.DataFrame()
 if "api_key" not in st.session_state:
-    st.session_state.api_key = "111"
+    st.session_state.api_key = ""
 if "api_base" not in st.session_state:
-    st.session_state.api_base = "http://104.215.28.223:8080/v1"
+    st.session_state.api_base = ""
 if "model_name" not in st.session_state:
-    st.session_state.model_name = "Qwen2.5-72B"
+    st.session_state.model_name = ""
 if "data_type" not in st.session_state:
     st.session_state.data_type = "important"
 if "table_type" not in st.session_state:
@@ -34,6 +34,7 @@ with st.sidebar:
     
     # API设置
     st.subheader("API 配置")
+    st.markdown("可以尝试不设置直接使用，我配置了免费模型资源")
     api_key = st.text_input("API Key", value=st.session_state.api_key, type="password")
     api_base = st.text_input("API Base URL", value=st.session_state.api_base)
     model_name = st.text_input("模型名称", value=st.session_state.model_name)

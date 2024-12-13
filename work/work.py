@@ -9,6 +9,9 @@ import io
 from streamlit.runtime.uploaded_file_manager import UploadedFile
 import tempfile
 import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 class DataWithUnitAndSource(BaseModel):
     key: str = Field(description="字段名")
@@ -38,7 +41,9 @@ def uploadfile_to_temp(file_obj: UploadedFile) -> str:
 
 class NumberService:
     
-    def __init__(self, api_key: str = "111", api_base: str = "http://104.215.28.223:8080/v1", model_name: str = "Qwen2.5-72B"):
+    def __init__(self, api_key: str = os.getenv("OPENAI_API_KEY"), 
+                 api_base: str = os.getenv("OPENAI_API_BASE"), 
+                 model_name: str = os.getenv("OPENAI_MODEL_NAME")):
         self.client = OpenAI(
             api_key = api_key,
             base_url = api_base
