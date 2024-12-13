@@ -15,7 +15,7 @@ File2Table 是一个智能文档数据提取工具，能够从各种文档中自
 
 ## 在线体验 🌐
 
-访问 [File2Table Demo](https://zhuhai.fun) 立即体验！
+访问 [File2Table Demo](https://file2table.streamlit.app/) 立即体验！
 
 ## 安装说明 🚀
 
