@@ -4,6 +4,11 @@ import io
 from work.work import NumberService, uploadfile_to_temp
 import os
 
+# streamlit应用获取secrets
+key=st.secrets['api_key']
+base=st.secrets['api_base']
+model=st.secrets['model_name']
+
 
 # 初始化session state
 if "df" not in st.session_state:
@@ -113,9 +118,14 @@ if process_button:
             
             try:
                 # 创建服务实例并更新配置
-                service = NumberService(api_key=st.session_state.api_key, 
-                                        api_base=st.session_state.api_base, 
-                                        model_name=st.session_state.model_name)
+                if st.session_state.api_key:
+                    service = NumberService(api_key=st.session_state.api_key, 
+                                            api_base=st.session_state.api_base, 
+                                            model_name=st.session_state.model_name)
+                else:
+                    service = NumberService(api_key=key, 
+                                            api_base=base, 
+                                            model_name=model)
                 
                 # 读取文件内容
                 content = service.file_load(temp_path)
