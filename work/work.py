@@ -73,19 +73,23 @@ class NumberService:
             
             elif file_path_lower.endswith('.doc'):
                 # 处理 .doc 文件
-                try:
-                    from win32com import client
-                    word = client.Dispatch('Word.Application')
+                import platform
+                if platform.system() == 'Windows':
                     try:
-                        word.Visible = False
-                        doc = word.Documents.Open(file_path)
-                        file_content = doc.Content.Text
-                        doc.Close()
-                        return file_content
-                    finally:
-                        word.Quit()
-                except Exception as e:
-                    raise ValueError(f"处理 .doc 文件失败，请确保安装了 Microsoft Word: {str(e)}")
+                        from win32com import client
+                        word = client.Dispatch('Word.Application')
+                        try:
+                            word.Visible = False
+                            doc = word.Documents.Open(file_path)
+                            file_content = doc.Content.Text
+                            doc.Close()
+                            return file_content
+                        finally:
+                            word.Quit()
+                    except Exception as e:
+                        raise ValueError(f"处理 .doc 文件失败，请确保安装了 Microsoft Word: {str(e)}")
+                else:
+                    raise ValueError("当前应用环境为Linux不支持 .doc 格式，请转换为 .docx 格式后再试")
             
             else:
                 raise ValueError(f"不支持的文件类型: {file_path}")

@@ -1,0 +1,6 @@
+streamlit
+openai
+python-docx
+PyMuPDF
+pywin32; platform_system == "Windows"
+xlsxwriter
