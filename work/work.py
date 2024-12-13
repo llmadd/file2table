@@ -44,6 +44,7 @@ class NumberService:
     def __init__(self, api_key: str = os.getenv("OPENAI_API_KEY"), 
                  api_base: str = os.getenv("OPENAI_API_BASE"), 
                  model_name: str = os.getenv("OPENAI_MODEL_NAME")):
+        print(model_name)
         self.client = OpenAI(
             api_key = api_key,
             base_url = api_base
