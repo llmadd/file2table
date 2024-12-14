@@ -4,6 +4,7 @@ import io
 from work.work import NumberService, uploadfile_to_temp
 import os
 
+
 # streamlit应用获取secrets
 key=st.secrets['api_key']
 base=st.secrets['api_base']
@@ -113,7 +114,6 @@ with col2:
 if process_button:
     if uploaded_file is not None:
         try:
-            # 保存上传的文件到临时文件
             temp_path = uploadfile_to_temp(uploaded_file)
             
             try:
@@ -139,6 +139,9 @@ if process_button:
                 # 创建进度条
                 progress_bar = st.progress(0)
                 
+                # 创建结果显示区域
+                results_container = st.container()
+                
                 # 处理数据
                 generate = service.run(content_list, table_type=st.session_state.table_type, data_type=st.session_state.data_type)
                 current_results = []  # 存储当前处理的结果
@@ -149,6 +152,12 @@ if process_button:
                             data_list = data["data"]
                             df = pd.DataFrame(data_list)
                             df["文件名"] = uploaded_file.name
+                            
+                            # 立即显示当前数据块
+                            with results_container:
+                                st.write(f"📄 数据块 {ind+1} 提取结果")
+                                st.dataframe(df, use_container_width=True)
+                                st.divider()
                             
                             # 保存当前结果
                             current_results.append({
@@ -189,7 +198,7 @@ if process_button:
                         mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
                         type="primary"
                     )
-            
+
             finally:
                 # 清理临时文件
                 try:

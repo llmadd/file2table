@@ -54,3 +54,5 @@ tmp/
 
 # 其他
 .streamlit/ 
++ !.streamlit/
++ .streamlit/secrets.toml
