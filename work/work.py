@@ -44,13 +44,12 @@ class NumberService:
     def __init__(self, api_key: str = os.getenv("OPENAI_API_KEY"), 
                  api_base: str = os.getenv("OPENAI_API_BASE"), 
                  model_name: str = os.getenv("OPENAI_MODEL_NAME")):
-        print(model_name)
         self.client = OpenAI(
             api_key = api_key,
             base_url = api_base
         )
         self.model_name = model_name
-    
+        print(self.model_name)
     def file_load(self, file_path: str) -> str:
         """从文件路径读取内容"""
         file_content = ""
@@ -156,15 +155,23 @@ class NumberService:
                 {"role": "user", "content": prompt.format(content = page_content)}
             ]
             try:
-                response = self.client.chat.completions.create(
-                    model = self.model_name,
-                    messages = messages,
-                    extra_body = {
-                        "guided_json": DataList.model_json_schema() 
-                    }
-                )
+                if "gpt-4o" in self.model_name:
+                    response = self.client.beta.chat.completions.parse(
+                        model = self.model_name,
+                        messages = messages,
+                        response_format = DataList,
+
+                    )
+                else:
+                    response = self.client.chat.completions.create(
+                        model = self.model_name,
+                        messages = messages,
+                        extra_body = {
+                            "guided_json": DataList.model_json_schema() 
+                        }
+                    )
             except Exception as e:
-                raise ValueError(f"模型请求失败（ps:我的免费模型服务暂时不可用，设置你模型的api_key和api_base）: {str(e)}")
+                raise ValueError(f"模型请求失败（ps:现在仅支持gpt-4o模型和vllm兼容openai部署模型）: {str(e)}")
 
             try:
                 answer = response.choices[0].message.content
